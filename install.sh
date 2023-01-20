@@ -56,9 +56,9 @@ cd sd
 echo -e "${CYAN}Downloading models${NC}"
 
 CHOICES=(
-    "1" "Stable-Diffusion 1.5" off
-    "2" "Stable-Diffusion 1.5 Inpainting" off
-    "3" "Anything-V3.0" off
+    "1" "Stable-Diffusion v1.5" off
+    "2" "Stable-Diffusion v1.5 Inpainting" off
+    "3" "Anything v3.0" off
     "4" "Deliberate (by XpucT)" off
 )
 
@@ -71,25 +71,25 @@ cd models/Stable-diffusion
 if [[ $CHOICE == *"1"* ]]
   then
     echo -e "${CYAN}Downloading Stable-Diffusion 1.5${NC}"
-    aria2c --seed-time=0 $MAGNET_SD_1_5 2>&1 | dialog --title "Downloading $(CHOICES[0])" --progressbox 20 70
+    aria2c --enable-color false --seed-time=0 $MAGNET_SD_1_5 2>&1 | dialog --title "Downloading Stable-Diffusion v1.5" --progressbox 20 70
     
 fi
 
 if [[ $CHOICE == *"2"* ]]
   then
     echo -e "${CYAN}Downloading Stable-Diffusion 1.5 Inpainting${NC}"
-    aria2c --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | dialog --title "Downloading $(CHOICES[1])" --progressbox 20 70
+    aria2c --enable-color false --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | dialog --title "Downloading Stable-Diffusion v1.5 Inpainting" --progressbox 20 70
 fi
 
 if [[ $CHOICE == *"3"* ]]
   then
     echo -e "${CYAN}Downloading Anything-V3.0${NC}"
-    aria2c -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | dialog --title "Downloading $(CHOICES[2])" --progressbox 20 70
+    aria2c --enable-color false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | dialog --title "Downloading Anything v3.0" --progressbox 20 70
 
 if [[ $CHOICE == *"4"* ]]
   then
     echo -e "${CYAN}Downloading Deliberate (by XpucT)${NC}"
-    aria2c -x4 https://civitai.com/api/download/models/5616 2>&1 | dialog --title "Downloading $(CHOICES[3])" --progressbox 20 70
+    aria2c --enable-color false -x4 https://civitai.com/api/download/models/5616 2>&1 | dialog --title "Downloading Deliberate (by XpucT)" --progressbox 20 70
 fi
 cd ../..
 
