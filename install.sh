@@ -72,7 +72,6 @@ if [[ $CHOICE == *"1"* ]]
   then
     echo -e "${CYAN}Downloading Stable-Diffusion 1.5${NC}"
     aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5 2>&1 #| dialog --title "Downloading Stable-Diffusion v1.5" --progressbox 20 70
-    
 fi
 
 if [[ $CHOICE == *"2"* ]]
@@ -85,6 +84,7 @@ if [[ $CHOICE == *"3"* ]]
   then
     echo -e "${CYAN}Downloading Anything-V3.0${NC}"
     aria2c --enable-color=false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 #| dialog --title "Downloading Anything v3.0" --progressbox 20 70
+fi
 
 if [[ $CHOICE == *"4"* ]]
   then
