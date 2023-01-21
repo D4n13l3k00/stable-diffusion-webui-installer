@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# AGPL-3.0 License
+
+# Author of this script:
+#  github.com/D4n13lk300
+#        t.me/D4n13lk300
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -40,14 +46,20 @@ apt install -y git curl wget aria2 p7zip-full \
 echo -e "${YELLOW}Changing shell to zsh${NC}"
 chsh -s $(which zsh)
 
-echo -e "${GREEN}Downloading CUDA 12 keyring${NC}"
-aria2c https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
-echo -e "${GREEN}Installing CUDA 12 keyring${NC}"
-dpkg -i cuda-keyring_1.0-1_all.deb
-echo -e "${GREEN}Adding CUDA 12 repository${NC}"
-apt update
-echo -e "${GREEN}Installing CUDA 12${NC}"
-apt -y install cuda
+if [ ! -f /usr/bin/nvidia-smi ]
+  then
+  echo -e "${GREEN}Downloading CUDA 12 keyring${NC}"
+  aria2c https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
+  echo -e "${GREEN}Installing CUDA 12 keyring${NC}"
+  dpkg -i cuda-keyring_1.0-1_all.deb
+  echo -e "${GREEN}Adding CUDA 12 repository${NC}"
+  apt update
+  echo -e "${GREEN}Installing CUDA 12${NC}"
+  apt -y install cuda
+else
+  echo -e "${GREEN}Nvidia drivers detected, skipping CUDA installation${NC}"
+fi
+
 
 echo -e "${CYAN}Cloning repository${NC}"
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui sd

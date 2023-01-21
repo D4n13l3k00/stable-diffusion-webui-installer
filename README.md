@@ -1,4 +1,8 @@
-# 😎 Stable-diffusion-webui installer for Ubuntu 22.04 LTS
+# 😎 Stable-diffusion-webui installer for Ubuntu Server 22.04 LTS
+
+## About
+
+This script was created for Selectel GPU Line, for fast and easy installation of stable-diffusion, but this script can be used on any Ubuntu Server 22.04 LTS(idk?)
 
 ## Features
 
@@ -17,4 +21,6 @@ chmod +x install.sh
 ./install.sh
 ```
 
-#### P.S This script was created for Selectel GPU Line, for fast and easy installation of stable-diffusion, but this script can be used on any Ubuntu 22.04 LTS server(idk?)
+## 📝 License
+
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details
