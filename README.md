@@ -14,6 +14,7 @@ This script was created for Selectel GPU Line, for fast and easy installation of
   * SD-1.5-inpainting
   * Anything-v3.0
   * Deliberate
+  * f222
 
 ```bash
 wget https://raw.githubusercontent.com/D4n13l3k00/stable-diffusion-webui-installer/master/install.sh
