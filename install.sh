@@ -72,6 +72,7 @@ CHOICES=(
     "2" "Stable-Diffusion v1.5 Inpainting" off
     "3" "Anything v3.0" off
     "4" "Deliberate (by XpucT)" off
+    "5" "f222" off
 )
 
 CHOICE=$(dialog --clear --title "Choose models to download" --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
@@ -102,6 +103,12 @@ if [[ $CHOICE == *"4"* ]]
   then
     echo -e "${CYAN}Downloading Deliberate (by XpucT)${NC}"
     aria2c --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | dialog --title "Downloading Deliberate (by XpucT)" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"5"* ]]
+  then
+    echo -e "${CYAN}Downloading f222${NC}"
+    aria2c --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | dialog --title "Downloading f222" --progressbox 40 100
 fi
 cd ../..
 
