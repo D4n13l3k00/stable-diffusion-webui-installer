@@ -68,14 +68,22 @@ cd sd
 echo -e "${CYAN}Downloading models${NC}"
 
 CHOICES=(
-    "1" "Stable-Diffusion v1.5" off
-    "2" "Stable-Diffusion v1.5 Inpainting" off
-    "3" "Anything v3.0" off
-    "4" "Deliberate (by XpucT)" off
-    "5" "f222" off
+    "1" "[O] Stable-Diffusion v1.5" off
+    "2" "[O] Stable-Diffusion v1.5 Inpainting" off
+    "3" "[A] Anything v4.5" off
+    "4" "[A] Anything v4.0" off
+    "5" "[A] Anything v3.0" off
+    "6" "[A] Elysium Anime v3" off
+    "7" "[A] Elysium Anime v2" off
+    "8" "[A] Waifu Diffusion v1.3" off
+    "9" "[S] Midjourney v4" off
+    "10" "[AIO] Deliberate latest (by XpucT)" off
+    "11" "[AIO] f222" off
 )
 
-CHOICE=$(dialog --clear --title "Choose models to download" --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
+EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Uncategorized, AIO - All in one"
+
+CHOICE=$(dialog --clear --title "Choose models to download"  --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
 
 MAGNET_SD_1_5=$(echo "H4sIAAAAAAAAA5WS227DIAyG7/ce7V2sATk0lao9CyROwhIOIlA1ffqxra2qrWqoxIXB/mT7/1G81+j3Hyd/CE7vhZfDnrYcu0IUXck4KXnNu5qUNS9oLQivKtY1eUFLVm1bfTiSrMisCxrbDBU3elqgGa3fencIrd0wvqFdPN7xZkQHxqL+iWPo+pgmjFUxz7U2QTf4l6vBcSd6aIyKb3RH3p8U3zcR0nvjXOx2Ycu6rJ+wt8EiL6kFZ5pxfowN3tt5Fcxz9oBLm3WXsuUVwXCRMi/IyoIwe+STH2CWa12OUiDME6JdpPbo4i/pgobTcv42rWK79QkptBNefU5ZiYDwoEyMow4wulQlzqjMZ5rNN/GkXrKjnV+kBjTjDFGLdMYGMcnmevvVLxFVRsvosvQ5KHwFw1Hq/iVmwimcoJPpxJ23iQR3avlf/fYFCq5qSIMEAAA=" | base64 -d | gunzip)
 MAGNET_SD_1_5_INPAINTING=$(echo "H4sIAAAAAAAAA5WT226DMAyG7/ce3R0WCbRApWrPkoApGeSgHLq2T7+wtdPUrSWVcuFgPn77t5Fsr9Bv345+F6zaci+GLV/TgjVYEYY5RVpxWud5hS0jTd6XpGmalrKuI6+d2rkuO5BsnQllmFBeqD20o/Gv3u5CZ1YFW9E+Hm9ZO6IFbVB9xTG0+5gmRVHFPFNKB9XiLdeAZZbHb2oZn9Ga5A9e/i3Chffa2qh2YTfNprlhB+8T4fqR7E9PkRbUgNXt6O4rukWwLIuELq8VYrhYWa7JQpXgPLLJD+DEUlMHwRHchGhOcaxo45L0QcHxdJ6HVhX1coUUugmvc34odgEIcA9SxzjaDqNNxOCMUr/fH/O/5gl1yg7GPUkNqEcH0Yt0xn2waLqcbYAwzktcJS2xCXwS7fX27XuipNGyB4ep9kmtRFwm4UuQmK4iNY7z7/4MM+EUjtCLv8TLJ6viCTyJBAAA" | base64 -d | gunzip)
@@ -83,32 +91,79 @@ MAGNET_SD_1_5_INPAINTING=$(echo "H4sIAAAAAAAAA5WT226DMAyG7/ce3R0WCbRApWrPkoApGeS
 cd models/Stable-diffusion
 if [[ $CHOICE == *"1"* ]]
   then
-    echo -e "${CYAN}Downloading Stable-Diffusion 1.5${NC}"
-    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5 2>&1 | dialog --title "Downloading Stable-Diffusion v1.5" --progressbox 40 100
+    TITLE="Downloading Stable-Diffusion v1.5"
+    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"2"* ]]
   then
-    echo -e "${CYAN}Downloading Stable-Diffusion 1.5 Inpainting${NC}"
-    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | dialog --title "Downloading Stable-Diffusion v1.5 Inpainting" --progressbox 40 100
+    TITLE="Downloading Stable-Diffusion v1.5 Inpainting"
+    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"3"* ]]
   then
-    echo -e "${CYAN}Downloading Anything-V3.0${NC}"
-    aria2c --enable-color=false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | dialog --title "Downloading Anything v3.0" --progressbox 40 100
+    TITLE="Downloading Anything-V4.5"
+    aria2c --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.5-pruned.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"4"* ]]
   then
-    echo -e "${CYAN}Downloading Deliberate (by XpucT)${NC}"
-    aria2c --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | dialog --title "Downloading Deliberate (by XpucT)" --progressbox 40 100
+    TITLE="Downloading Anything-V4.0"
+    aria2c --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.0-pruned.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"5"* ]]
   then
-    echo -e "${CYAN}Downloading f222${NC}"
-    aria2c --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | dialog --title "Downloading f222" --progressbox 40 100
+    TITLE="Downloading Anything-V3.0"
+    aria2c --enable-color=false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"6"* ]]
+  then
+    TITLE="Downloading Elysium Anime V3"
+    aria2c --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V3.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"7"* ]]
+  then
+    TITLE="Downloading Elysium Anime V2"
+    aria2c --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V2.ckpt 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"8"* ]]
+  then
+    TITLE="Downloading Waifu Diffusion v1.3"
+    aria2c --enable-color=false -x4 https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"9"* ]]
+  then
+    TITLE="Downloading Midjourney v4"
+    aria2c --enable-color=false -x4 https://huggingface.co/prompthero/openjourney/resolve/main/mdjrny-v4.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"10"* ]]
+  then
+    TITLE="Downloading Deliberate latest (by XpucT)"
+    aria2c --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"11"* ]]
+  then
+    TITLE="Downloading f222"
+    aria2c --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
 
