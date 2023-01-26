@@ -106,7 +106,7 @@ fi
 if [[ $CHOICE == *"3"* ]]
   then
     FILENAME="Anything V4.5.safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.5-pruned.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -114,7 +114,7 @@ fi
 if [[ $CHOICE == *"4"* ]]
   then
     FILENAME="Anything V4.0.safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.0-pruned.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -122,7 +122,7 @@ fi
 if [[ $CHOICE == *"5"* ]]
   then
     FILENAME="Anything V3.0.safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -130,7 +130,7 @@ fi
 if [[ $CHOICE == *"6"* ]]
   then
     FILENAME="Elysium Anime V3.safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V3.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -138,7 +138,7 @@ fi
 if [[ $CHOICE == *"7"* ]]
   then
     FILENAME="Elysium Anime V2.ckpt"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V2.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -146,7 +146,7 @@ fi
 if [[ $CHOICE == *"8"* ]]
   then
     FILENAME="Waifu Diffusion v1.3.ckpt"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -154,7 +154,7 @@ fi
 if [[ $CHOICE == *"9"* ]]
   then
     FILENAME="Midjourney v4.safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/prompthero/openjourney/resolve/main/mdjrny-v4.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
@@ -162,7 +162,7 @@ fi
 if [[ $CHOICE == *"10"* ]]
   then
     FILENAME="Deliberate latest (by XpucT).safetensors"
-    TITLE="Downloading $TITLE"
+    TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
