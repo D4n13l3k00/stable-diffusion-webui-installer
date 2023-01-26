@@ -179,7 +179,6 @@ cd ../..
 
 echo -e "${CYAN}Allowing running from root${NC}"
 sed -i 's/can_run_as_root=0/can_run_as_root=1/' webui.sh
-sed -i 's/"${python_cmd}" "${LAUNCH_SCRIPT}" "$@"/"${python_cmd}" "${LAUNCH_SCRIPT}" --listen "$@"'
 
 echo -e "${GREEN}All done!${NC}"
 echo -e "${GREEN}Run ${CYAN}./webui.sh --listen${GREEN} to start the webui${NC}"
