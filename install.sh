@@ -192,9 +192,9 @@ if [[ $CHOICE == *"1"* ]]
     echo -e "${YELLOW}Installing ControlNet"
     mkdir -p models/ControlNet
     cd models/ControlNet
-    arai2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
+    aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
-    ariac -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors 2>&1 | \
+    aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors 2>&1 | \
         dialog --title "Downloading COntrolNet Depth model" --progressbox 40 100
     aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
