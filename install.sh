@@ -83,6 +83,7 @@ CHOICES=(
 
 EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Uncategorized, AIO - All in one"
 
+
 CHOICE=$(dialog --clear --title "Choose models to download"  --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
 
 MAGNET_SD_1_5=$(echo "H4sIAAAAAAAAA5WS227DIAyG7/ce7V2sATk0lao9CyROwhIOIlA1ffqxra2qrWqoxIXB/mT7/1G81+j3Hyd/CE7vhZfDnrYcu0IUXck4KXnNu5qUNS9oLQivKtY1eUFLVm1bfTiSrMisCxrbDBU3elqgGa3fencIrd0wvqFdPN7xZkQHxqL+iWPo+pgmjFUxz7U2QTf4l6vBcSd6aIyKb3RH3p8U3zcR0nvjXOx2Ycu6rJ+wt8EiL6kFZ5pxfowN3tt5Fcxz9oBLm3WXsuUVwXCRMi/IyoIwe+STH2CWa12OUiDME6JdpPbo4i/pgobTcv42rWK79QkptBNefU5ZiYDwoEyMow4wulQlzqjMZ5rNN/GkXrKjnV+kBjTjDFGLdMYGMcnmevvVLxFVRsvosvQ5KHwFw1Hq/iVmwimcoJPpxJ23iQR3avlf/fYFCq5qSIMEAAA=" | base64 -d | gunzip)
@@ -171,17 +172,55 @@ if [[ $CHOICE == *"11"* ]]
   then
     FILENAME="f222.ckpt"
     TITLE="Downloading $TITLE"
-    aria2c -o "$FILENAME"
-    aria2c --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
+
+clear
+
+EXTENSIONS_LIST=(
+    "1" "ControlNet + Models" false
+    "2" "PoseX (need ControlNet)" false
+)
+
+
+CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 0 0 0 "${EXTENSIONS_LIST[@]}" 2>&1 >/dev/tty)
+
+if [[ $CHOICE == *"1"* ]]
+  then
+    echo -e "${YELLOW}Installing ControlNet"
+    mkdir -p models/ControlNet
+    cd models/ControlNet
+    aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
+        dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
+    aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_depth-fp16.safetensors 2>&1 | \
+        dialog --title "Downloading COntrolNet Depth model" --progressbox 40 100
+    aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/blob/main/control_canny-fp16.safetensors 2>&1 | \
+        dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
+    cd ../..
+    clear
+    cd extensions
+    git clone https://github.com/Mikubill/sd-webui-controlnet
+    cd ..
+fi
+if [[ $CHOICE == *"2"* ]]
+  then
+    echo -e "${YELLOW} Installing PoseX"
+    cd extensions
+    git clone https://github.com/hnmr293/posex
+    cd ..
+fi
+
+clear
 
 echo -e "${CYAN}Allowing running from root${NC}"
 sed -i 's/can_run_as_root=0/can_run_as_root=1/' webui.sh
 
 echo -e "${GREEN}All done!${NC}"
-echo -e "${GREEN}Run ${CYAN}./webui.sh --listen${GREEN} to start the webui${NC}"
+echo -e "${GREEN}Use `cd sd` to enter into Stable-Diffusion folder"
+echo -e "${GREEN}Run ${CYAN}./webui.sh --listen --xformers${GREEN} to start the webui${NC}"
 IP=$(curl -sL ident.me)
+echo -e "${CYAN}On first run it will be download some requirements. This may take a while"
 echo -e "${GREEN}The address will be http://${IP}:7860/${NC}"
 echo -e "${GREEN}Inpainting work on Firefox (I tested Chrome and it doesn't work)${NC}"
