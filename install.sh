@@ -68,17 +68,18 @@ cd sd
 echo -e "${CYAN}Downloading models${NC}"
 
 CHOICES=(
-    "1" "[O] Stable-Diffusion v1.5" off
-    "2" "[O] Stable-Diffusion v1.5 Inpainting" off
-    "3" "[A] Anything v4.5" off
+    "1" "[O] Stable-Diffusion v1.5" on
+    "2" "[O] Stable-Diffusion v1.5 Inpainting" on
+    "3" "[A] Anything v4.5" on
     "4" "[A] Anything v4.0" off
     "5" "[A] Anything v3.0" off
     "6" "[A] Elysium Anime v3" off
     "7" "[A] Elysium Anime v2" off
     "8" "[A] Waifu Diffusion v1.3" off
     "9" "[S] Midjourney v4" off
-    "10" "[AIO] Deliberate latest (by XpucT)" off
-    "11" "[AIO] f222" off
+    "10" "[AIO] Deliberate" on
+    "11" "[AIO] Deliberate Inpainting" on
+    "12" "[AIO] f222" off
 )
 
 EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Uncategorized, AIO - All in one"
@@ -162,7 +163,7 @@ fi
 
 if [[ $CHOICE == *"10"* ]]
   then
-    FILENAME="Deliberate latest (by XpucT).safetensors"
+    FILENAME="Deliberate.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
@@ -170,9 +171,17 @@ fi
 
 if [[ $CHOICE == *"11"* ]]
   then
-    FILENAME="f222.ckpt"
+    FILENAME="Deliberate Inpainting.safetensors"
+    TITLE="Downloading $FILENAME"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate-inpainting.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"12"* ]]
+  then
+    FILENAME="f222.safetensors"
     TITLE="Downloading $TITLE"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
@@ -218,7 +227,7 @@ echo -e "${CYAN}Allowing running from root${NC}"
 sed -i 's/can_run_as_root=0/can_run_as_root=1/' webui.sh
 
 echo -e "${GREEN}All done!${NC}"
-echo -e "${GREEN}Use `cd sd` to enter into Stable-Diffusion folder"
+echo -e "${GREEN}Use \`cd sd\` to enter into Stable-Diffusion folder"
 echo -e "${GREEN}Run ${CYAN}./webui.sh --listen --xformers${GREEN} to start the webui${NC}"
 IP=$(curl -sL ident.me)
 echo -e "${CYAN}On first run it will be download some requirements. This may take a while"
