@@ -10,17 +10,18 @@ This script was created for Selectel GPU Line, for fast and easy installation of
   * Installs all dependencies
   * Installs the latest version of stable-diffusion-webui
 * ▶️ You can select models to install in the pseudo-graphic interface
-  * Stable-Diffusion v1.5
-  * Stable-Diffusion v1.5 Inpainting
-  * Anything v4.5
-  * Anything v4.0
-  * Anything v3.0
-  * Elysium Anime v3
-  * Elysium Anime v2
-  * Waifu Diffusion v1.3
-  * Midjourney v4
-  * Deliberate latest (by XpucT)
-  * f222
+  * [O] Stable-Diffusion v1.5
+  * [O] Stable-Diffusion v1.5 Inpainting
+  * [A] Anything v4.5
+  * [A] Anything v4.0
+  * [A] Anything v3.0
+  * [A] Elysium Anime v3
+  * [A] Elysium Anime v2
+  * [A] Waifu Diffusion v1.3
+  * [S] Midjourney v4
+  * [AIO] Deliberate latest (by XpucT)
+  * [AIO] f222
+    * O - Original, A - Anime, S - Stylized on another AI, U - Universal, F - Faces
 
 ```bash
 wget https://raw.githubusercontent.com/D4n13l3k00/stable-diffusion-webui-installer/master/install.sh

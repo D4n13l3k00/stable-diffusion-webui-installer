@@ -68,20 +68,17 @@ cd sd
 echo -e "${CYAN}Downloading models${NC}"
 
 CHOICES=(
-    "1" "[O] Stable-Diffusion v1.5" off
-    "2" "[O] Stable-Diffusion v1.5 Inpainting" off
-    "3" "[A] Anything v4.5" off
-    "4" "[A] Anything v4.0" off
-    "5" "[A] Anything v3.0" off
-    "6" "[A] Elysium Anime v3" off
-    "7" "[A] Elysium Anime v2" off
-    "8" "[A] Waifu Diffusion v1.3" off
-    "9" "[S] Midjourney v4" off
-    "10" "[AIO] Deliberate latest (by XpucT)" off
-    "11" "[AIO] f222" off
+    "1" "[O] Stable-Diffusion v1.5" on
+    "2" "[O] Stable-Diffusion v1.5 Inpainting" on
+    "3" "[A] Anything v5" on
+    "4" "[A] Elysium Anime v3" off
+    "5" "[A] Waifu Diffusion v1.3" off
+    "6" "[U] Deliberate" on
+    "7" "[U] Deliberate Inpainting" on
+    "8" "[F] f222" off
 )
 
-EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Uncategorized, AIO - All in one"
+EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Universal, F - Faces"
 
 
 CHOICE=$(dialog --clear --title "Choose models to download"  --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
@@ -106,29 +103,13 @@ fi
 
 if [[ $CHOICE == *"3"* ]]
   then
-    FILENAME="Anything V4.5.safetensors"
+    FILENAME="Anything V5.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.5-pruned.safetensors 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/90854 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"4"* ]]
-  then
-    FILENAME="Anything V4.0.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.0-pruned.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
-fi
-
-if [[ $CHOICE == *"5"* ]]
-  then
-    FILENAME="Anything V3.0.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/Linaqruf/anything-v3.0/resolve/main/Anything-V3.0-pruned.ckpt 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
-fi
-
-if [[ $CHOICE == *"6"* ]]
   then
     FILENAME="Elysium Anime V3.safetensors"
     TITLE="Downloading $FILENAME"
@@ -136,15 +117,7 @@ if [[ $CHOICE == *"6"* ]]
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"7"* ]]
-  then
-    FILENAME="Elysium Anime V2.ckpt"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V2.ckpt 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
-fi
-
-if [[ $CHOICE == *"8"* ]]
+if [[ $CHOICE == *"5"* ]]
   then
     FILENAME="Waifu Diffusion v1.3.ckpt"
     TITLE="Downloading $FILENAME"
@@ -152,25 +125,25 @@ if [[ $CHOICE == *"8"* ]]
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"9"* ]]
+if [[ $CHOICE == *"6"* ]]
   then
-    FILENAME="Midjourney v4.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/prompthero/openjourney/resolve/main/mdjrny-v4.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
-fi
-
-if [[ $CHOICE == *"10"* ]]
-  then
-    FILENAME="Deliberate latest (by XpucT).safetensors"
+    FILENAME="Deliberate.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"11"* ]]
+if [[ $CHOICE == *"7"* ]]
   then
-    FILENAME="f222.ckpt"
+    FILENAME="Deliberate Inpainting.safetensors"
+    TITLE="Downloading $FILENAME"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate-inpainting.safetensors 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"8"* ]]
+  then
+    FILENAME="f222.safetensors"
     TITLE="Downloading $TITLE"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
@@ -195,7 +168,7 @@ if [[ $CHOICE == *"1"* ]]
     aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
     aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors 2>&1 | \
-        dialog --title "Downloading COntrolNet Depth model" --progressbox 40 100
+        dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
     aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
     cd ../..
