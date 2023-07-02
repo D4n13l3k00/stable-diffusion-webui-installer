@@ -143,7 +143,7 @@ fi
 
 if [[ $CHOICE == *"8"* ]]
   then
-    FILENAME="f222.safetensors"
+    FILENAME="f222.ckpt"
     TITLE="Downloading $TITLE"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.ckpt 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
