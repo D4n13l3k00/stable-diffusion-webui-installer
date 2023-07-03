@@ -12,16 +12,13 @@ This script was created for Selectel GPU Line, for fast and easy installation of
   * ▶️ Install any models
     * [O] Stable-Diffusion v1.5
     * [O] Stable-Diffusion v1.5 Inpainting
-    * [A] Anything v4.5
-    * [A] Anything v4.0
-    * [A] Anything v3.0
+    * [A] Anything v5
     * [A] Elysium Anime v3
-    * [A] Elysium Anime v2
     * [A] Waifu Diffusion v1.3
-    * [S] Midjourney v4
     * [U] Deliberate latest (by XpucT)
+    * [U] Deliberate Inpainting (by XpucT)
     * [F] f222
-      * O - Original, A - Anime, S - Stylized on another AI, U - Universal, F - Faces
+      * O - Original, A - Anime, U - Universal, F - Faces
   * ▶️ Install any extensions:
     * ControlNet (openpose, depth, canny models)
     * PoseX (Need ControlNet)

@@ -78,10 +78,20 @@ CHOICES=(
     "8" "[F] f222" off
 )
 
-EXTRA_LABEL="O - Original, A - Anime, S - Stylized on another AI, U - Universal, F - Faces"
+EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal\n[F] - Faces"
 
+CHOICES=("Option 1" "Option 2" "Option 3")
 
-CHOICE=$(dialog --clear --title "Choose models to download"  --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
+makechoice() {
+    CHOICE=$(dialog --clear --title "Choose models to download" --extra-button --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
+}
+
+makechoice
+
+if [ "$?" = "3" ]; then
+  dialog --clear --title "Help" --msgbox "$EXTRA_LABEL" 10 30
+  makechoice
+fi
 
 MAGNET_SD_1_5=$(echo "H4sIAAAAAAAAA5WS227DIAyG7/ce7V2sATk0lao9CyROwhIOIlA1ffqxra2qrWqoxIXB/mT7/1G81+j3Hyd/CE7vhZfDnrYcu0IUXck4KXnNu5qUNS9oLQivKtY1eUFLVm1bfTiSrMisCxrbDBU3elqgGa3fencIrd0wvqFdPN7xZkQHxqL+iWPo+pgmjFUxz7U2QTf4l6vBcSd6aIyKb3RH3p8U3zcR0nvjXOx2Ycu6rJ+wt8EiL6kFZ5pxfowN3tt5Fcxz9oBLm3WXsuUVwXCRMi/IyoIwe+STH2CWa12OUiDME6JdpPbo4i/pgobTcv42rWK79QkptBNefU5ZiYDwoEyMow4wulQlzqjMZ5rNN/GkXrKjnV+kBjTjDFGLdMYGMcnmevvVLxFVRsvosvQ5KHwFw1Hq/iVmwimcoJPpxJ23iQR3avlf/fYFCq5qSIMEAAA=" | base64 -d | gunzip)
 MAGNET_SD_1_5_INPAINTING=$(echo "H4sIAAAAAAAAA5WT226DMAyG7/ce3R0WCbRApWrPkoApGeSgHLq2T7+wtdPUrSWVcuFgPn77t5Fsr9Bv345+F6zaci+GLV/TgjVYEYY5RVpxWud5hS0jTd6XpGmalrKuI6+d2rkuO5BsnQllmFBeqD20o/Gv3u5CZ1YFW9E+Hm9ZO6IFbVB9xTG0+5gmRVHFPFNKB9XiLdeAZZbHb2oZn9Ga5A9e/i3Chffa2qh2YTfNprlhB+8T4fqR7E9PkRbUgNXt6O4rukWwLIuELq8VYrhYWa7JQpXgPLLJD+DEUlMHwRHchGhOcaxo45L0QcHxdJ6HVhX1coUUugmvc34odgEIcA9SxzjaDqNNxOCMUr/fH/O/5gl1yg7GPUkNqEcH0Yt0xn2waLqcbYAwzktcJS2xCXwS7fX27XuipNGyB4ep9kmtRFwm4UuQmK4iNY7z7/4MM+EUjtCLv8TLJ6viCTyJBAAA" | base64 -d | gunzip)
