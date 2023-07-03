@@ -80,7 +80,6 @@ CHOICES=(
 
 EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal\n[F] - Faces"
 
-CHOICES=("Option 1" "Option 2" "Option 3")
 
 makechoice() {
     CHOICE=$(dialog --clear --title "Choose models to download" --extra-button --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
