@@ -73,9 +73,10 @@ CHOICES=(
     "3" "[A] Anything v5" on
     "4" "[A] Elysium Anime v3" off
     "5" "[A] Waifu Diffusion v1.3" off
-    "6" "[U] Deliberate" on
-    "7" "[U] Deliberate Inpainting" on
-    "8" "[F] f222" off
+    "6" "[U] Deliberate v2.0" on
+    "7" "[U] Deliberate v1.1" on
+    "8" "[U] Deliberate Inpainting" on
+    "9" "[F] f222" off
 )
 
 EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal\n[F] - Faces"
@@ -136,17 +137,17 @@ fi
 
 if [[ $CHOICE == *"6"* ]]
   then
-    FILENAME="Deliberate.safetensors"
+    FILENAME="Deliberate v2.0.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/15236 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"7"* ]]
   then
-    FILENAME="Deliberate Inpainting.safetensors"
+    FILENAME="Deliberate v1.1.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate-inpainting.safetensors 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
@@ -158,7 +159,7 @@ if [[ $CHOICE == *"8"* ]]
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"12"* ]]
+if [[ $CHOICE == *"9"* ]]
   then
     FILENAME="f222.safetensors"
     TITLE="Downloading $TITLE"
@@ -166,6 +167,36 @@ if [[ $CHOICE == *"12"* ]]
       dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
+
+clear
+
+LORAS_LIST=(
+  "1" "LowRA by XpucT" off # https://civitai.com/api/download/models/63006
+  "2" "Lit by XpucT" off # https://civitai.com/api/download/models/55665
+)
+
+CHOICE=$(dialog --clear --title "Choose LoRAs to install"  --checklist " " 0 0 0 "${LORAS_LIST[@]}" 2>&1 >/dev/tty)
+
+if [[ $CHOICE == *"1"* ]]
+  then
+    mkdir -p models/Lora
+    cd -p models/Lora
+    FILENAME="LowRA.safetensors"
+    TITLE="Downloading $FILENAME"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/63006 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+    cd ../..
+fi
+if [[ $CHOICE == *"2"* ]]
+  then
+    mkdir -p models/Lora
+    cd -p models/Lora
+    FILENAME="Lit.safetensors"
+    TITLE="Downloading $FILENAME"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/55665 2>&1 | \
+      dialog --title "$TITLE" --progressbox 40 100
+    cd ../..
+fi
 
 clear
 
