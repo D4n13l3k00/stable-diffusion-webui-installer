@@ -171,8 +171,8 @@ cd ../..
 clear
 
 LORAS_LIST=(
-  "1" "LowRA by XpucT" off # https://civitai.com/api/download/models/63006
-  "2" "Lit by XpucT" off # https://civitai.com/api/download/models/55665
+  "1" "LowRA by XpucT" off
+  "2" "Lit by XpucT" off
 )
 
 CHOICE=$(dialog --clear --title "Choose LoRAs to install"  --checklist " " 0 0 0 "${LORAS_LIST[@]}" 2>&1 >/dev/tty)
@@ -201,14 +201,32 @@ fi
 clear
 
 EXTENSIONS_LIST=(
-    "1" "ControlNet + Models" false
-    "2" "PoseX (need ControlNet)" false
+    "1" "Aspect ratio selector" true
+    "2" "Canvas Zoom" true
+    "3" "ControlNet + Models" false
+    "4" "PoseX (need ControlNet)" false
 )
 
 
 CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 0 0 0 "${EXTENSIONS_LIST[@]}" 2>&1 >/dev/tty)
 
 if [[ $CHOICE == *"1"* ]]
+  then
+    echo -e "${YELLOW} Installing Aspect Ratio selector"
+    cd extensions
+    git clone https://github.com/alemelis/sd-webui-ar
+    cd ..
+fi
+
+if [[ $CHOICE == *"2"* ]]
+  then
+    echo -e "${YELLOW} Installing Canvas Zoom"
+    cd extensions
+    git clone https://github.com/richrobber2/canvas-zoom
+    cd ..
+fi
+
+if [[ $CHOICE == *"3"* ]]
   then
     echo -e "${YELLOW}Installing ControlNet"
     mkdir -p models/ControlNet
@@ -225,7 +243,8 @@ if [[ $CHOICE == *"1"* ]]
     git clone https://github.com/Mikubill/sd-webui-controlnet
     cd ..
 fi
-if [[ $CHOICE == *"2"* ]]
+
+if [[ $CHOICE == *"4"* ]]
   then
     echo -e "${YELLOW} Installing PoseX"
     cd extensions

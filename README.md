@@ -21,6 +21,8 @@ This script was created for Selectel GPU Line, for fast and easy installation of
     * [F] f222
       * O - Original, A - Anime, U - Universal, F - Faces
   * ▶️ Install any extensions:
+    * Aspect ratio selector
+    * Canvas Zoom
     * ControlNet (openpose, depth, canny models)
     * PoseX (Need ControlNet)
 
