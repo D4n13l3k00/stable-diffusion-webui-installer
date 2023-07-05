@@ -213,35 +213,35 @@ CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 
 if [[ $CHOICE == *"1"* ]]
   then
     echo -e "${YELLOW} Installing Aspect Ratio selector"
-    cd extensions
+    cd /root/sd/extensions
     git clone https://github.com/alemelis/sd-webui-ar
-    cd ..
+    cd /root/sd/
 fi
 
 if [[ $CHOICE == *"2"* ]]
   then
     echo -e "${YELLOW} Installing Canvas Zoom"
-    cd extensions
+    cd /root/sd/extensions
     git clone https://github.com/richrobber2/canvas-zoom
-    cd ..
+    cd /root/sd/
 fi
 
 if [[ $CHOICE == *"3"* ]]
   then
     echo -e "${YELLOW}Installing ControlNet"
-    mkdir -p models/ControlNet
-    cd models/ControlNet
+    mkdir -p /root/sd/models/ControlNet
+    cd /root/sd/models/ControlNet
     aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
     aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
     aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors 2>&1 | \
         dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
-    cd ../..
+    cd /root/sd/
     clear
     cd extensions
     git clone https://github.com/Mikubill/sd-webui-controlnet
-    cd ..
+    cd /root/sd/
 fi
 
 if [[ $CHOICE == *"4"* ]]
@@ -249,13 +249,13 @@ if [[ $CHOICE == *"4"* ]]
     echo -e "${YELLOW} Installing PoseX"
     cd extensions
     git clone https://github.com/hnmr293/posex
-    cd ..
+    cd /root/sd/
 fi
 
 clear
 
 echo -e "${CYAN}Allowing running from root${NC}"
-sed -i 's/can_run_as_root=0/can_run_as_root=1/' webui.sh
+sed -i 's/can_run_as_root=0/can_run_as_root=1/' /root/sd/webui.sh
 
 echo -e "${GREEN}All done!${NC}"
 echo -e "${GREEN}Use \`cd sd\` to enter into Stable-Diffusion folder"
