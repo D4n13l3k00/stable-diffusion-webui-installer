@@ -139,7 +139,7 @@ if [[ $CHOICE == *"6"* ]]
   then
     FILENAME="Deliberate v2.0.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/15236 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
@@ -147,7 +147,7 @@ if [[ $CHOICE == *"7"* ]]
   then
     FILENAME="Deliberate v1.1.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/5616 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate.safetensors 2>&1 | \
       dialog --title "$TITLE" --progressbox 40 100
 fi
 
