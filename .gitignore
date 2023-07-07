@@ -1,6 +1,4 @@
-test.sh
-
-
-# Added by cargo
-
 /target
+miniconda_portable/
+rc.sh
+test.sh
