@@ -255,6 +255,7 @@ fi
 
 clear
 
+mkdir -p /root/sd/models/ESRGAN
 cd /root/sd/models/ESRGAN
 aria2c -x4 -q https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth
 cd /root/sd
