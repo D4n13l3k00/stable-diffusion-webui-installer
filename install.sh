@@ -15,18 +15,18 @@ BG_RED='\033[41m'
 NC='\033[0m'
 
 if [ ! -t 0 ]
-  then echo -e "${WHITE}${BG_RED}Please run this script directly${NC}"
-  exit
+then echo -e "${WHITE}${BG_RED}Please run this script directly${NC}"
+    exit
 fi
 
 if [ "$EUID" -ne 0 ]
-  then echo -e "${WHITE}${BG_RED}Please run as root${NC}"
-  exit
+then echo -e "${WHITE}${BG_RED}Please run as root${NC}"
+    exit
 fi
 
 if [ "$(lsb_release -rs)" != "22.04" ]
-  then echo -e "${WHITE}${BG_RED}This script only works on Ubuntu 22.04${NC}"
-  exit
+then echo -e "${WHITE}${BG_RED}This script only works on Ubuntu 22.04${NC}"
+    exit
 fi
 
 echo -e "${YELLOW}Updating system${NC}"
@@ -34,30 +34,31 @@ apt update -y
 apt upgrade -y
 echo -e "${CYAN}Installing main dependencies${NC}"
 apt install -y git curl wget aria2 p7zip-full \
-                    neovim zsh tree \
-                    p7zip-rar python3 \
-                    python3-pip \
-                    python3-setuptools \
-                    python3-venv \
-                    python3-numpy \
-                    dialog \
-                    linux-headers-$(uname -r)
+neovim zsh tree \
+p7zip-rar python3 \
+python3-pip \
+python3-setuptools \
+python3-venv \
+python3-numpy \
+dialog \
+linux-headers-$(uname -r)
 
 echo -e "${YELLOW}Changing shell to zsh${NC}"
 chsh -s $(which zsh)
 
 if [ ! -f /usr/bin/nvidia-smi ]
-  then
-  echo -e "${GREEN}Downloading CUDA 12 keyring${NC}"
-  aria2c https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
-  echo -e "${GREEN}Installing CUDA 12 keyring${NC}"
-  dpkg -i cuda-keyring_1.0-1_all.deb
-  echo -e "${GREEN}Adding CUDA 12 repository${NC}"
-  apt update
-  echo -e "${GREEN}Installing CUDA 12${NC}"
-  apt -y install cuda
+then
+    echo -e "${GREEN}Downloading CUDA 12 keyring${NC}"
+    aria2c https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb -o cuda.deb
+    echo -e "${GREEN}Installing CUDA 12 keyring${NC}"
+    dpkg -i cuda.deb
+    echo -e "${GREEN}Adding CUDA 12 repository${NC}"
+    apt update
+    echo -e "${GREEN}Installing CUDA 12${NC}"
+    apt -y install cuda
+    rm cuda.deb
 else
-  echo -e "${GREEN}Nvidia drivers detected, skipping CUDA installation${NC}"
+    echo -e "${GREEN}Nvidia drivers detected, skipping CUDA installation${NC}"
 fi
 
 
@@ -89,8 +90,8 @@ makechoice() {
 makechoice
 
 if [ "$?" = "3" ]; then
-  dialog --clear --title "Help" --msgbox "$EXTRA_LABEL" 10 30
-  makechoice
+    dialog --clear --title "Help" --msgbox "$EXTRA_LABEL" 10 30
+    makechoice
 fi
 
 MAGNET_SD_1_5=$(echo "H4sIAAAAAAAAA5WS227DIAyG7/ce7V2sATk0lao9CyROwhIOIlA1ffqxra2qrWqoxIXB/mT7/1G81+j3Hyd/CE7vhZfDnrYcu0IUXck4KXnNu5qUNS9oLQivKtY1eUFLVm1bfTiSrMisCxrbDBU3elqgGa3fencIrd0wvqFdPN7xZkQHxqL+iWPo+pgmjFUxz7U2QTf4l6vBcSd6aIyKb3RH3p8U3zcR0nvjXOx2Ycu6rJ+wt8EiL6kFZ5pxfowN3tt5Fcxz9oBLm3WXsuUVwXCRMi/IyoIwe+STH2CWa12OUiDME6JdpPbo4i/pgobTcv42rWK79QkptBNefU5ZiYDwoEyMow4wulQlzqjMZ5rNN/GkXrKjnV+kBjTjDFGLdMYGMcnmevvVLxFVRsvosvQ5KHwFw1Hq/iVmwimcoJPpxJ23iQR3avlf/fYFCq5qSIMEAAA=" | base64 -d | gunzip)
@@ -98,103 +99,103 @@ MAGNET_SD_1_5_INPAINTING=$(echo "H4sIAAAAAAAAA5WT226DMAyG7/ce3R0WCbRApWrPkoApGeS
 
 cd models/Stable-diffusion
 if [[ $CHOICE == *"1"* ]]
-  then
+then
     TITLE="Downloading Stable-Diffusion v1.5"
     aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"2"* ]]
-  then
+then
     TITLE="Downloading Stable-Diffusion v1.5 Inpainting"
     aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"3"* ]]
-  then
+then
     FILENAME="Anything V5.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/90854 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"4"* ]]
-  then
+then
     FILENAME="Elysium Anime V3.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V3.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"5"* ]]
-  then
+then
     FILENAME="Waifu Diffusion v1.3.ckpt"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"6"* ]]
-  then
+then
     FILENAME="Deliberate v2.0.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"7"* ]]
-  then
+then
     FILENAME="Deliberate v1.1.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"8"* ]]
-  then
+then
     FILENAME="Deliberate Inpainting.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate-inpainting.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 
 if [[ $CHOICE == *"9"* ]]
-  then
+then
     FILENAME="f222.safetensors"
     TITLE="Downloading $TITLE"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.safetensors 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
 
 clear
 
 LORAS_LIST=(
-  "1" "LowRA by XpucT" off
-  "2" "Lit by XpucT" off
+    "1" "LowRA by XpucT" off
+    "2" "Lit by XpucT" off
 )
 
 CHOICE=$(dialog --clear --title "Choose LoRAs to install"  --checklist " " 0 0 0 "${LORAS_LIST[@]}" 2>&1 >/dev/tty)
 
 if [[ $CHOICE == *"1"* ]]
-  then
+then
     mkdir -p models/Lora
-    cd -p models/Lora
+    cd models/Lora
     FILENAME="LowRA.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/63006 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
     cd ../..
 fi
 if [[ $CHOICE == *"2"* ]]
-  then
+then
     mkdir -p models/Lora
-    cd -p models/Lora
+    cd models/Lora
     FILENAME="Lit.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/55665 2>&1 | \
-      dialog --title "$TITLE" --progressbox 40 100
+    dialog --title "$TITLE" --progressbox 40 100
     cd ../..
 fi
 
@@ -211,7 +212,7 @@ EXTENSIONS_LIST=(
 CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 0 0 0 "${EXTENSIONS_LIST[@]}" 2>&1 >/dev/tty)
 
 if [[ $CHOICE == *"1"* ]]
-  then
+then
     echo -e "${YELLOW} Installing Aspect Ratio selector"
     cd /root/sd/extensions
     git clone https://github.com/alemelis/sd-webui-ar
@@ -219,7 +220,7 @@ if [[ $CHOICE == *"1"* ]]
 fi
 
 if [[ $CHOICE == *"2"* ]]
-  then
+then
     echo -e "${YELLOW} Installing Canvas Zoom"
     cd /root/sd/extensions
     git clone https://github.com/richrobber2/canvas-zoom
@@ -227,16 +228,16 @@ if [[ $CHOICE == *"2"* ]]
 fi
 
 if [[ $CHOICE == *"3"* ]]
-  then
+then
     echo -e "${YELLOW}Installing ControlNet"
     mkdir -p /root/sd/models/ControlNet
     cd /root/sd/models/ControlNet
     aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
-        dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
+    dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
     aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors 2>&1 | \
-        dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
+    dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
     aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors 2>&1 | \
-        dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
+    dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
     cd /root/sd/
     clear
     cd extensions
@@ -245,7 +246,7 @@ if [[ $CHOICE == *"3"* ]]
 fi
 
 if [[ $CHOICE == *"4"* ]]
-  then
+then
     echo -e "${YELLOW} Installing PoseX"
     cd extensions
     git clone https://github.com/hnmr293/posex
@@ -253,6 +254,10 @@ if [[ $CHOICE == *"4"* ]]
 fi
 
 clear
+
+cd /root/sd/models/ESRGAN
+aria2c -x4 -q https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth
+cd /root/sd
 
 echo -e "${CYAN}Allowing running from root${NC}"
 sed -i 's/can_run_as_root=0/can_run_as_root=1/' /root/sd/webui.sh
