@@ -43,7 +43,7 @@ fn clone_repo() {
         std::process::Command::new("git")
             .arg("clone")
             .arg("https://github.com/AUTOMATIC1111/stable-diffusion-webui")
-            .arg("stable")
+            .arg("sd")
             .spawn()
             .unwrap()
             .wait()

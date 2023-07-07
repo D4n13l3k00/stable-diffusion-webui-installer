@@ -28,7 +28,7 @@ fn main() {
         kohya::run_module()
     } else if let Some(_matches) = matches.subcommand_matches("delete") {
 
-        let dirs = ["sd", "kohya_ss", "miniconda_portable"];
+        let dirs = ["sd", "kohya_ss", "miniconda"];
 
         execute!(
             stdout,

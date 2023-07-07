@@ -11,7 +11,7 @@ pub fn install() {
         "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh";
     let miniconda_installer_path = "miniconda.sh";
 
-    if Path::new("miniconda_portable").exists() {
+    if Path::new("miniconda").exists() {
         execute!(
             stdout,
             SetForegroundColor(Color::Green),
@@ -54,7 +54,7 @@ pub fn install() {
         .arg(miniconda_installer_path)
         .arg("-b")
         .arg("-p")
-        .arg("miniconda_portable")
+        .arg("miniconda")
         .spawn()
         .unwrap()
         .wait()
@@ -76,7 +76,7 @@ pub fn install() {
 fn create_env() {
     let mut stdout = stdout();
 
-    if Path::new("miniconda_portable/envs/neuro").exists() {
+    if Path::new("miniconda/envs/neuro").exists() {
         execute!(
             stdout,
             SetForegroundColor(Color::Green),
@@ -95,7 +95,7 @@ fn create_env() {
     )
     .unwrap();
 
-    std::process::Command::new("miniconda_portable/bin/conda")
+    std::process::Command::new("miniconda/bin/conda")
         .arg("create")
         .arg("-n")
         .arg("neuro")
@@ -111,7 +111,7 @@ fn create_env() {
         .unwrap();
 
     // conda init
-    std::process::Command::new("miniconda_portable/bin/conda")
+    std::process::Command::new("miniconda/bin/conda")
         .arg("init")
         .arg("bash")
         .arg("zsh")

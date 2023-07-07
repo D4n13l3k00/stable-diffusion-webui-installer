@@ -1,4 +1,5 @@
 /target
-miniconda_portable/
+/sd
+/miniconda
 rc.sh
 test.sh
