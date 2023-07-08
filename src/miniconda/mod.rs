@@ -3,6 +3,7 @@ use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
 use reqwest::blocking as rq;
 use std::io::stdout;
 use std::path::Path;
+use std::process::Command;
 
 pub fn install() {
     let mut stdout = stdout();
@@ -42,7 +43,7 @@ pub fn install() {
         ResetColor
     )
     .unwrap();
-    std::process::Command::new("chmod")
+    Command::new("chmod")
         .arg("+x")
         .arg(miniconda_installer_path)
         .spawn()
@@ -50,7 +51,7 @@ pub fn install() {
         .wait()
         .unwrap();
 
-    std::process::Command::new("bash")
+    Command::new("bash")
         .arg(miniconda_installer_path)
         .arg("-b")
         .arg("-p")
@@ -95,7 +96,7 @@ fn create_env() {
     )
     .unwrap();
 
-    std::process::Command::new("miniconda/bin/conda")
+    Command::new("miniconda/bin/conda")
         .arg("create")
         .arg("-n")
         .arg("neuro")
@@ -110,8 +111,7 @@ fn create_env() {
         .wait()
         .unwrap();
 
-    // conda init
-    std::process::Command::new("miniconda/bin/conda")
+    Command::new("miniconda/bin/conda")
         .arg("init")
         .arg("bash")
         .arg("zsh")

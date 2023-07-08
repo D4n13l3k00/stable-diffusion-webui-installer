@@ -2,7 +2,7 @@
 
 ## About
 
-Installer of SD, Kohya_SS for linux written in Rust
+This script was created for Selectel GPU Line, for fast and easy installation of stable-diffusion, but this script can be used on any Ubuntu Server 22.04 LTS(idk?)
 
 ## Features
 
@@ -25,6 +25,12 @@ Installer of SD, Kohya_SS for linux written in Rust
     * Canvas Zoom
     * ControlNet (openpose, depth, canny models)
     * PoseX (Need ControlNet)
+
+```bash
+wget https://raw.githubusercontent.com/D4n13l3k00/stable-diffusion-webui-installer/master/install.sh
+chmod +x install.sh
+./install.sh
+```
 
 ## 📝 License
 

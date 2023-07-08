@@ -2,14 +2,16 @@ use crossterm::execute;
 use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
 use dialoguer::{self, theme::ColorfulTheme, Select};
 use std::io::stdout;
+use std::path::Path;
 
-use crate::miniconda;
+use crate::{miniconda, nvidia};
 mod extensions;
 mod loras;
 mod models;
 
 pub fn run_module() {
-    let selections = &["Install SD"];
+    let mut stdout = stdout();
+    let selections = &["Install SD", "Install models"];
 
     let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("Select action")
@@ -21,8 +23,21 @@ pub fn run_module() {
 
     match selection {
         0 => {
+            nvidia::run_module(false);
             miniconda::install();
             clone_repo();
+        },
+        1 => {
+            if Path::new("sd/models").is_dir() {
+                models::run_module()
+            } else {
+                execute!(
+                    stdout,
+                    SetForegroundColor(Color::Red),
+                    Print("Please, install SD first\n"),
+                    ResetColor
+                ).unwrap();
+            }
         }
         _ => return,
     }
@@ -54,7 +69,31 @@ fn clone_repo() {
 }
 
 fn install_additions() {
+    let mut stdout = stdout();
     models::run_module();
     extensions::run_module();
     loras::run_module();
+    // print success message
+    // activate conda env via conda activate neuro
+    // enter into sd folder
+    // run ./webui.sh --listen --xformers
+
+    execute!(
+        stdout,
+        SetForegroundColor(Color::Green),
+        Print("Stable-Diffusion-WebUI installed successfully\n"),
+        SetForegroundColor(Color::Yellow),
+        Print("Please, activate conda env via "),
+        SetForegroundColor(Color::Cyan),
+        Print("`conda activate neuro`\n"),
+        SetForegroundColor(Color::Yellow),
+        Print("Then, enter into sd folder "),
+        SetForegroundColor(Color::Cyan),
+        Print("`cd sd`\n"),
+        SetForegroundColor(Color::Yellow),
+        Print("And run "),
+        SetForegroundColor(Color::Cyan),
+        Print("`./webui.sh --listen --xformers`\n"),
+        ResetColor
+    ).unwrap();
 }
