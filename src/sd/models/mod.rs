@@ -3,6 +3,7 @@ use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
 use dialoguer::theme::ColorfulTheme;
 use dialoguer::MultiSelect;
 use std::io::stdout;
+use std::process::Command;
 
 struct Model {
     name: String,
@@ -49,12 +50,20 @@ pub fn run_module() {
             filename: "Elysium Anime v3.safetensors".to_string(),
             url: "https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V3.safetensors"
                 .to_string(),
-        },Model {
+        },
+        Model {
+            name: "Anything v5".to_string(),
+            filename: "Anything v5.safetensors".to_string(),
+            url: "https://civitai.com/api/download/models/90854?type=Model&format=SafeTensor&size=full&fp=fp16"
+                .to_string(),
+        },
+        Model {
             name: "Waifu Diffusion v1.3".to_string(),
             filename: "Waifu Diffusion v1.3.ckpt".to_string(),
             url: "https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt"
                 .to_string(),
-        },Model {
+        },
+        Model {
             name: "f222".to_string(),
             filename: "f222.safetensors".to_string(),
             url: "https://huggingface.co/acheong08/f222/resolve/main/f222.safetensors"
@@ -77,7 +86,7 @@ pub fn run_module() {
             )
             .unwrap();
             let models_dir = "sd/models/Stable-diffusion";
-            std::process::Command::new("aria2c")
+            Command::new("aria2c")
                 .arg("-x")
                 .arg("4")
                 .arg("--summary-interval")

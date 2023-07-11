@@ -11,7 +11,7 @@ mod models;
 
 pub fn run_module() {
     let mut stdout = stdout();
-    let selections = &["Install SD", "Install models", "Install extensions"];
+    let selections = &["Install SD", "Install models", "Install extensions", "Install LoRAs"];
 
     let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("Select action")
@@ -43,6 +43,22 @@ pub fn run_module() {
         2 => {
             if Path::new("sd/models").is_dir() {
                 extensions::run_module()
+            } else {
+                execute!(
+                    stdout,
+                    SetForegroundColor(Color::Red),
+                    Print("Please, install SD first\n"),
+                    ResetColor
+                )
+                .unwrap();
+            }
+        }
+        3 => {
+            if Path::new("sd/models").is_dir() {
+                if !Path::new("sd/models/Lora").is_dir() {
+                    std::fs::create_dir("sd/models/Lora").unwrap();
+                }
+                loras::run_module()
             } else {
                 execute!(
                     stdout,
