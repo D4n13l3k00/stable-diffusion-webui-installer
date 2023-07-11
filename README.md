@@ -38,7 +38,7 @@ Options:
     * [Elysium Anime v3](https://civitai.com/models/8602?modelVersionId=10500)
     * [Waifu Diffusion v1.3](https://civitai.com/models/44?modelVersionId=121)
     * [f222](https://civitai.com/models/1188?modelVersionId=1224)
-  * ▶️ Install any LoRAs' models:
+  * ▶️ Install any LoRA models:
     * [LowRA](https://civitai.com/models/48139/lowra)
     * [Lit](https://civitai.com/models/51145/lit)
     * [FilmGirl / Film Grain LoRA & LoHA](https://civitai.com/models/33208/filmgirl-film-grain-lora-and-loha)

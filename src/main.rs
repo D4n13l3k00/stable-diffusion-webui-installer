@@ -14,7 +14,7 @@ mod sd;
 fn main() {
     let mut stdout = stdout();
 
-    let matches = command!()
+    let mut args = command!()
         .about("SD and Kohya_ss webuis installer and manager")
         .subcommand(Command::new("sd").about("Manage Stable-Diffusion-WebUI"))
         .subcommand(Command::new("lora").about("Manage Kohya_ss"))
@@ -25,8 +25,8 @@ fn main() {
                     -f --force "Force install drivers even if they are already installed"
                 )),
         )
-        .subcommand(Command::new("delete").about("Delete all"))
-        .get_matches();
+        .subcommand(Command::new("delete").about("Delete all"));
+    let matches = args.clone().get_matches();
     if let Some(_matches) = matches.subcommand_matches("sd") {
         sd::run_module()
     } else if let Some(_matches) = matches.subcommand_matches("lora") {
@@ -83,5 +83,14 @@ fn main() {
             )
             .unwrap();
         }
+    } else {
+        execute!(
+            stdout,
+            SetForegroundColor(Color::Red),
+            Print("Error: No subcommand specified\n"),
+            ResetColor
+        )
+        .unwrap();
+        args.print_help().unwrap();
     }
 }
