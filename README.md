@@ -10,16 +10,14 @@ Installer of SD, Kohya_SS for linux written in Rust
   * Installs all dependencies
   * Installs the latest version of stable-diffusion-webui
   * ▶️ Install any models
-    * [O] Stable-Diffusion v1.5
-    * [O] Stable-Diffusion v1.5 Inpainting
-    * [A] Anything v5
-    * [A] Elysium Anime v3
-    * [A] Waifu Diffusion v1.3
-    * [U] Deliberate v2.0 (by XpucT)
-    * [U] Deliberate v1.1 (by XpucT)
-    * [U] Deliberate Inpainting (by XpucT)
-    * [F] f222
-      * O - Original, A - Anime, U - Universal, F - Faces
+    * Deliberate v2.0
+    * Deliberate v1.1
+    * Deliberate Inpainting
+    * Reliberate
+    * Reliberate Inpainting
+    * Elysium Anime v3
+    * Waifu Diffusion v1.3
+    * f222
   * ▶️ Install any extensions:
     * Aspect ratio selector
     * Canvas Zoom

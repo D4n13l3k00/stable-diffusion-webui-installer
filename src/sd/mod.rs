@@ -11,7 +11,7 @@ mod models;
 
 pub fn run_module() {
     let mut stdout = stdout();
-    let selections = &["Install SD", "Install models"];
+    let selections = &["Install SD", "Install models", "Install extensions"];
 
     let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("Select action")
@@ -26,7 +26,7 @@ pub fn run_module() {
             nvidia::run_module(false);
             miniconda::install();
             clone_repo();
-        },
+        }
         1 => {
             if Path::new("sd/models").is_dir() {
                 models::run_module()
@@ -36,7 +36,21 @@ pub fn run_module() {
                     SetForegroundColor(Color::Red),
                     Print("Please, install SD first\n"),
                     ResetColor
-                ).unwrap();
+                )
+                .unwrap();
+            }
+        }
+        2 => {
+            if Path::new("sd/models").is_dir() {
+                extensions::run_module()
+            } else {
+                execute!(
+                    stdout,
+                    SetForegroundColor(Color::Red),
+                    Print("Please, install SD first\n"),
+                    ResetColor
+                )
+                .unwrap();
             }
         }
         _ => return,
@@ -95,5 +109,6 @@ fn install_additions() {
         SetForegroundColor(Color::Cyan),
         Print("`./webui.sh --listen --xformers`\n"),
         ResetColor
-    ).unwrap();
+    )
+    .unwrap();
 }

@@ -63,7 +63,7 @@ pub fn run_module() {
     ];
 
     MultiSelect::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select models")
+        .with_prompt("Select models to download")
         .items(&models.iter().map(|i| &i.name).collect::<Vec<_>>())
         .interact()
         .unwrap()
