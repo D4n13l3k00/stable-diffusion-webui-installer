@@ -20,7 +20,7 @@ fn main() {
         .subcommand(Command::new("lora").about("Manage Kohya_ss"))
         .subcommand(
             Command::new("nvidia")
-                .about("Install Nvidia drivers")
+                .about("Install Nvidia drivers (Only for Ubuntu 22.04 LTS)")
                 .arg(arg!(
                     -f --force "Force install drivers even if they are already installed"
                 )),
