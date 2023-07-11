@@ -49,22 +49,33 @@ pub fn run_module(force: bool) {
                 .arg("https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb")
                 .arg("-o")
                 .arg("cuda.deb")
-                .output()
+                .spawn()
+                .unwrap()
+                .wait()
                 .unwrap();
 
             Command::new("sudo")
                 .arg("dpkg")
                 .arg("-i")
                 .arg("cuda.deb")
-                .output()
+                .spawn()
+                .unwrap()
+                .wait()
                 .unwrap();
 
-            Command::new("rm").arg("cuda.deb").output().unwrap();
+            Command::new("rm")
+                .arg("cuda.deb")
+                .spawn()
+                .unwrap()
+                .wait()
+                .unwrap();
 
             Command::new("sudo")
                 .arg("apt")
                 .arg("update")
-                .output()
+                .spawn()
+                .unwrap()
+                .wait()
                 .unwrap();
 
             Command::new("sudo")
@@ -72,7 +83,9 @@ pub fn run_module(force: bool) {
                 .arg("install")
                 .arg("cuda")
                 .arg("-y")
-                .output()
+                .spawn()
+                .unwrap()
+                .wait()
                 .unwrap();
         } else {
             execute!(
