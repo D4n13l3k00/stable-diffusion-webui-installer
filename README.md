@@ -21,12 +21,11 @@ This script was created for Selectel GPU Line, for fast and easy installation of
       * [U] Deliberate Inpainting (by XpucT)
       * [U] Reliberate (by XpucT)
       * [U] Reliberate Inpainting (by XpucT)
-        * O - Original, A - Anime, U - Universal, F - Faces
+        * O - Original, A - Anime, U - Universal
     * ▶️ Install any extensions:
       * Aspect ratio selector
       * Canvas Zoom
-      * ControlNet (openpose, depth, canny models)
-      * PoseX (Need ControlNet)
+      * ControlNet (Depth, Inpaint, LineArt, Canny)
   * Installs the latest version of [Kohya_ss](/lora.sh)
 
 ```bash
