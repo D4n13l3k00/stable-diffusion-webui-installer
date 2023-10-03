@@ -16,9 +16,11 @@ This script was created for Selectel GPU Line, for fast and easy installation of
       * [A] Elysium Anime v3
       * [A] Waifu Diffusion v1.3
       * [U] Deliberate v2.0 (by XpucT)
+      * [U] Deliberate v3.0 (by XpucT)
       * [U] Deliberate v1.1 (by XpucT)
       * [U] Deliberate Inpainting (by XpucT)
-      * [F] f222
+      * [U] Reliberate (by XpucT)
+      * [U] Reliberate Inpainting (by XpucT)
         * O - Original, A - Anime, U - Universal, F - Faces
     * ▶️ Install any extensions:
       * Aspect ratio selector

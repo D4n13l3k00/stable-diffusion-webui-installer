@@ -74,13 +74,15 @@ CHOICES=(
     "3" "[A] Anything v5" on
     "4" "[A] Elysium Anime v3" off
     "5" "[A] Waifu Diffusion v1.3" off
-    "6" "[U] Deliberate v2.0" on
-    "7" "[U] Deliberate v1.1" on
-    "8" "[U] Deliberate Inpainting" on
-    "9" "[F] f222" off
+    "6" "[U] Deliberate v3.0" on
+    "7" "[U] Deliberate v2.0" on
+    "8" "[U] Deliberate v1.1" on
+    "9" "[U] Deliberate Inpainting" on
+    "10" "[U] Reliberate" on
+    "11" "[U] Reliberate Inpainting" on
 )
 
-EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal\n[F] - Faces"
+EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal"
 
 
 makechoice() {
@@ -138,13 +140,21 @@ fi
 
 if [[ $CHOICE == *"6"* ]]
 then
+    FILENAME="Deliberate v3.0.safetensors"
+    TITLE="Downloading $FILENAME"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/156110 2>&1 | \
+    dialog --title "$TITLE" --progressbox 40 100
+fi
+
+if [[ $CHOICE == *"7"* ]]
+then
     FILENAME="Deliberate v2.0.safetensors"
     TITLE="Downloading $FILENAME"
     aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors 2>&1 | \
     dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"7"* ]]
+if [[ $CHOICE == *"8"* ]]
 then
     FILENAME="Deliberate v1.1.safetensors"
     TITLE="Downloading $FILENAME"
@@ -152,7 +162,7 @@ then
     dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"8"* ]]
+if [[ $CHOICE == *"9"* ]]
 then
     FILENAME="Deliberate Inpainting.safetensors"
     TITLE="Downloading $FILENAME"
@@ -160,11 +170,20 @@ then
     dialog --title "$TITLE" --progressbox 40 100
 fi
 
-if [[ $CHOICE == *"9"* ]]
+if [[ $CHOICE == *"10"* ]]
 then
-    FILENAME="f222.safetensors"
+    FILENAME="Reliberate.safetensors"
     TITLE="Downloading $TITLE"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/acheong08/f222/resolve/main/f222.safetensors 2>&1 | \
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate.safetensors 2>&1 | \
+    dialog --title "$TITLE" --progressbox 40 100
+fi
+cd ../..
+
+if [[ $CHOICE == *"11"* ]]
+then
+    FILENAME="Reliberate Inpainting.safetensors"
+    TITLE="Downloading $TITLE"
+    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate-inpainting.safetensors 2>&1 | \
     dialog --title "$TITLE" --progressbox 40 100
 fi
 cd ../..
@@ -204,8 +223,7 @@ clear
 EXTENSIONS_LIST=(
     "1" "Aspect ratio selector" true
     "2" "Canvas Zoom" true
-    "3" "ControlNet + Models" false
-    "4" "PoseX (need ControlNet)" false
+    "3" "ControlNet (Depth, Inpaint, LineArt, Canny)" false
 )
 
 
@@ -232,12 +250,27 @@ then
     echo -e "${YELLOW}Installing ControlNet"
     mkdir -p /root/sd/models/ControlNet
     cd /root/sd/models/ControlNet
-    aria2c -o "openpose.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors 2>&1 | \
-    dialog --title "Downloading ControlNet OpenPose model" --progressbox 40 100
-    aria2c -o "depth.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors 2>&1 | \
-    dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
-    aria2c -o "canny.safetensors" --enable-color=false -x4 https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors 2>&1 | \
-    dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
+
+    aria2c -o "control_v11f1p_sd15_depth.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth 2>&1 | \
+        dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
+    aria2c -o "control_v11f1p_sd15_depth.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.yaml 2>&1 | \
+        dialog --title "Downloading ControlNet Depth config" --progressbox 40 100
+
+    aria2c -o "control_v11p_sd15_inpaint.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth 2>&1 | \
+        dialog --title "Downloading ControlNet Inpaint model" --progressbox 40 100
+    aria2c -o "control_v11p_sd15_inpaint.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.yaml 2>&1 | \
+        dialog --title "Downloading ControlNet Inpaint config" --progressbox 40 100
+    
+    aria2c -o "control_v11p_sd15_lineart.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth 2>&1 | \
+        dialog --title "Downloading ControlNet LineArt model" --progressbox 40 100
+    aria2c -o "control_v11p_sd15_lineart.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.yaml 2>&1 | \
+        dialog --title "Downloading ControlNet LineArt config" --progressbox 40 100
+
+    aria2c -o "control_v11p_sd15_canny.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth 2>&1 | \
+        dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
+    aria2c -o "control_v11p_sd15_canny.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.yaml 2>&1 | \
+        dialog --title "Downloading ControlNet Canny config" --progressbox 40 100
+
     cd /root/sd/
     clear
     cd extensions
@@ -245,19 +278,16 @@ then
     cd /root/sd/
 fi
 
-if [[ $CHOICE == *"4"* ]]
-then
-    echo -e "${YELLOW} Installing PoseX"
-    cd extensions
-    git clone https://github.com/hnmr293/posex
-    cd /root/sd/
-fi
-
 clear
 
 mkdir -p /root/sd/models/ESRGAN
 cd /root/sd/models/ESRGAN
-aria2c -x4 -q https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth
+
+aria2c -x4 -q -o "4x_NMKD-Siax_200k.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth
+aria2c -x4 -q -o "4x-UltraSharp.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth
+aria2c -x4 -q -o "WaifuGAN_v3_30000.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/WaifuGAN_v3_30000.pth
+aria2c -x4 -q -o "4x_RealisticRescaler_100000_G.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth
+
 cd /root/sd
 
 echo -e "${CYAN}Allowing running from root${NC}"
