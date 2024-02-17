@@ -286,7 +286,7 @@ for file in "${files[@]}"; do
     IFS='|' read -r -a parts <<< "$file"
     filename="${parts[0]}"
     url="${parts[1]}"
-    aria2c -x4 -q -o "$filename" "$url" 2>&1 | dialog --title "Downloading $filename" --progressbox 40 100
+    aria2c -x4 -o "$filename" "$url" 2>&1 | dialog --title "Downloading $filename" --progressbox 40 100
 done
 
 cd /root/sd
