@@ -9,20 +9,19 @@ This script was created for Selectel GPU Line, for fast and easy installation of
 * ▶️ Fully automatic installation
   * Installs all dependencies
   * Installs the latest version of [stable-diffusion-webui](/install.sh)
-    * ▶️ Install any models
-      * [O] Stable-Diffusion v1.5
-      * [O] Stable-Diffusion v1.5 Inpainting
-      * [A] Anything v5
-      * [A] Elysium Anime v3
-      * [A] Waifu Diffusion v1.3
-      * [U] Deliberate v2.0 (by XpucT)
-      * [U] Deliberate v3.0 (by XpucT)
-      * [U] Deliberate v1.1 (by XpucT)
-      * [U] Deliberate Inpainting (by XpucT)
-      * [U] Reliberate (by XpucT)
-      * [U] Reliberate Inpainting (by XpucT)
-        * O - Original, A - Anime, U - Universal
-    * ▶️ Install any extensions:
+    * ▶️ Install models:
+      * Deliberate v5
+      * Deliberate v5 Inpainting
+      * Deliberate v5 (SFW)
+      * Deliberate v5 (SFW) Inpainting
+      * Reliberate v3
+      * Reliberate v3 Inpainting
+      * Reliberate v2
+      * Reliberate v2 Inpainting
+      * Anime v2
+      * Anime v2 Inpainting
+      * Anything V5
+    * ▶️ Install extensions:
       * Aspect ratio selector
       * Canvas Zoom
       * ControlNet (Depth, Inpaint, LineArt, Canny)

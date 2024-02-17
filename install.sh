@@ -31,9 +31,18 @@ fi
 
 echo -e "${YELLOW}Updating system${NC}"
 apt update -y
-apt upgrade -y
+
+
+if [ "$1" == "-u" ]
+then
+    echo -e "${YELLOW}Upgrading system${NC}"
+    DEBIAN_FRONTEND=noninteractive apt upgrade -y 
+else
+    echo -e "${YELLOW}Skipping system upgrade${NC}"
+fi
+
 echo -e "${CYAN}Installing main dependencies${NC}"
-apt install -y git curl wget aria2 p7zip-full \
+DEBIAN_FRONTEND=noninteractive apt install -y git curl wget aria2 p7zip-full \
 neovim zsh tree \
 p7zip-rar python3 \
 python3-pip \
@@ -69,123 +78,95 @@ cd sd
 echo -e "${CYAN}Downloading models${NC}"
 
 CHOICES=(
-    "1" "[O] Stable-Diffusion v1.5" on
-    "2" "[O] Stable-Diffusion v1.5 Inpainting" on
-    "3" "[A] Anything v5" on
-    "4" "[A] Elysium Anime v3" off
-    "5" "[A] Waifu Diffusion v1.3" off
-    "6" "[U] Deliberate v3.0" on
-    "7" "[U] Deliberate v2.0" on
-    "8" "[U] Deliberate v1.1" on
-    "9" "[U] Deliberate Inpainting" on
-    "10" "[U] Reliberate" on
-    "11" "[U] Reliberate Inpainting" on
+    "1" "Deliberate v5" on
+    "2" "Deliberate v5 Inpainting" on
+    "3" "Deliberate v5 (SFW)" off
+    "4" "Deliberate v5 (SFW) Inpainting" off
+    "5" "Reliberate v3" on
+    "6" "Reliberate v3 Inpainting" on
+    "7" "Reliberate v2" off
+    "8" "Reliberate v2 Inpainting" off
+    "9" "Anime v2" on
+    "10" "Anime v2 Inpainting" on
+    "11" "Anything V5" off
 )
 
-EXTRA_LABEL="[O] - Original\n[A] - Anime\n[U] - Universal"
-
-
 makechoice() {
-    CHOICE=$(dialog --clear --title "Choose models to download" --extra-button --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
+    CHOICE=$(dialog --clear --title "Choose models to download" --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
+    local ERRORCODE=$?
+    if [ $ERRORCODE -ne 0 ]; then
+        echo "Error: Dialog failed with exit code $ERRORCODE"
+        exit $ERRORCODE
+    fi
 }
 
 makechoice
 
-if [ "$?" = "3" ]; then
-    dialog --clear --title "Help" --msgbox "$EXTRA_LABEL" 10 30
-    makechoice
-fi
-
-MAGNET_SD_1_5=$(echo "H4sIAAAAAAAAA5WS227DIAyG7/ce7V2sATk0lao9CyROwhIOIlA1ffqxra2qrWqoxIXB/mT7/1G81+j3Hyd/CE7vhZfDnrYcu0IUXck4KXnNu5qUNS9oLQivKtY1eUFLVm1bfTiSrMisCxrbDBU3elqgGa3fencIrd0wvqFdPN7xZkQHxqL+iWPo+pgmjFUxz7U2QTf4l6vBcSd6aIyKb3RH3p8U3zcR0nvjXOx2Ycu6rJ+wt8EiL6kFZ5pxfowN3tt5Fcxz9oBLm3WXsuUVwXCRMi/IyoIwe+STH2CWa12OUiDME6JdpPbo4i/pgobTcv42rWK79QkptBNefU5ZiYDwoEyMow4wulQlzqjMZ5rNN/GkXrKjnV+kBjTjDFGLdMYGMcnmevvVLxFVRsvosvQ5KHwFw1Hq/iVmwimcoJPpxJ23iQR3avlf/fYFCq5qSIMEAAA=" | base64 -d | gunzip)
-MAGNET_SD_1_5_INPAINTING=$(echo "H4sIAAAAAAAAA5WT226DMAyG7/ce3R0WCbRApWrPkoApGeSgHLq2T7+wtdPUrSWVcuFgPn77t5Fsr9Bv345+F6zaci+GLV/TgjVYEYY5RVpxWud5hS0jTd6XpGmalrKuI6+d2rkuO5BsnQllmFBeqD20o/Gv3u5CZ1YFW9E+Hm9ZO6IFbVB9xTG0+5gmRVHFPFNKB9XiLdeAZZbHb2oZn9Ga5A9e/i3Chffa2qh2YTfNprlhB+8T4fqR7E9PkRbUgNXt6O4rukWwLIuELq8VYrhYWa7JQpXgPLLJD+DEUlMHwRHchGhOcaxo45L0QcHxdJ6HVhX1coUUugmvc34odgEIcA9SxzjaDqNNxOCMUr/fH/O/5gl1yg7GPUkNqEcH0Yt0xn2waLqcbYAwzktcJS2xCXwS7fX27XuipNGyB4ep9kmtRFwm4UuQmK4iNY7z7/4MM+EUjtCLv8TLJ6viCTyJBAAA" | base64 -d | gunzip)
-
 cd models/Stable-diffusion
+
+download_model() {
+    FILENAME="$1"
+    TITLE="Downloading $FILENAME"
+    URL="$2"
+    aria2c -o "$FILENAME" --enable-color=false -x4 "$URL" 2>&1 | \
+    dialog --title "$TITLE" --progressbox 40 100
+}
+
 if [[ $CHOICE == *"1"* ]]
 then
-    TITLE="Downloading Stable-Diffusion v1.5"
-    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Deliberate v3.safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5.safetensors"
 fi
 
 if [[ $CHOICE == *"2"* ]]
 then
-    TITLE="Downloading Stable-Diffusion v1.5 Inpainting"
-    aria2c --enable-color=false --seed-time=0 $MAGNET_SD_1_5_INPAINTING 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Deliberate v5 Inpainting.safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5-inpainting.safetensors"
 fi
 
 if [[ $CHOICE == *"3"* ]]
 then
-    FILENAME="Anything V5.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/90854 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Deliberate v5 (SFW).safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5 (SFW).safetensors"
 fi
 
 if [[ $CHOICE == *"4"* ]]
 then
-    FILENAME="Elysium Anime V3.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hesw23168/SD-Elysium-Model/resolve/main/Elysium_Anime_V3.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Deliberate v5 (SFW) Inpainting.safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5 (SFW)-inpainting.safetensors"
 fi
 
 if [[ $CHOICE == *"5"* ]]
 then
-    FILENAME="Waifu Diffusion v1.3.ckpt"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Reliberate v3.safetensors" "https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate_v3.safetensors"
 fi
 
 if [[ $CHOICE == *"6"* ]]
 then
-    FILENAME="Deliberate v3.0.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/156110 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Reliberate v3 Inpainting.safetensors" "https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate_v3-inpainting.safetensors"
 fi
 
 if [[ $CHOICE == *"7"* ]]
 then
-    FILENAME="Deliberate v2.0.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v2.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Reliberate v2.safetensors" "https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate_v2.safetensors"
 fi
 
 if [[ $CHOICE == *"8"* ]]
 then
-    FILENAME="Deliberate v1.1.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Reliberate v2 Inpainting.safetensors" "https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate_v3-inpainting.safetensors"
 fi
 
 if [[ $CHOICE == *"9"* ]]
 then
-    FILENAME="Deliberate Inpainting.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate-inpainting.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Anime v2.safetensors" "https://huggingface.co/XpucT/Anime/resolve/main/Anime_v2.safetensors"
 fi
 
 if [[ $CHOICE == *"10"* ]]
 then
-    FILENAME="Reliberate.safetensors"
-    TITLE="Downloading $TITLE"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Anime v2 Inpainting.safetensors" "https://huggingface.co/XpucT/Anime/resolve/main/Anime_v2-inpainting.safetensors"
 fi
-cd ../..
 
 if [[ $CHOICE == *"11"* ]]
 then
-    FILENAME="Reliberate Inpainting.safetensors"
-    TITLE="Downloading $TITLE"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://huggingface.co/XpucT/Reliberate/resolve/main/Reliberate-inpainting.safetensors 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    download_model "Anything V5.safetensors" "https://civitai.com/api/download/models/90854"
 fi
+
 cd ../..
 
 clear
@@ -195,28 +176,30 @@ LORAS_LIST=(
     "2" "Lit by XpucT" off
 )
 
-CHOICE=$(dialog --clear --title "Choose LoRAs to install"  --checklist " " 0 0 0 "${LORAS_LIST[@]}" 2>&1 >/dev/tty)
+CHOICE=$(dialog --clear --title "Choose LoRAs to install" --checklist " " 0 0 0 "${LORAS_LIST[@]}" 2>&1 >/dev/tty)
 
-if [[ $CHOICE == *"1"* ]]
-then
+for option in $CHOICE; do
+    case $option in
+        1)
+            lora_name="LowRA"
+            lora_url="https://civitai.com/api/download/models/63006"
+            ;;
+        2)
+            lora_name="Lit"
+            lora_url="https://civitai.com/api/download/models/55665"
+            ;;
+        *)
+            continue
+            ;;
+    esac
+
     mkdir -p models/Lora
     cd models/Lora
-    FILENAME="LowRA.safetensors"
+    FILENAME="$lora_name.safetensors"
     TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/63006 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
+    aria2c -o "$FILENAME" --enable-color=false -x4 "$lora_url" 2>&1 | dialog --title "$TITLE" --progressbox 40 100
     cd ../..
-fi
-if [[ $CHOICE == *"2"* ]]
-then
-    mkdir -p models/Lora
-    cd models/Lora
-    FILENAME="Lit.safetensors"
-    TITLE="Downloading $FILENAME"
-    aria2c -o "$FILENAME" --enable-color=false -x4 https://civitai.com/api/download/models/55665 2>&1 | \
-    dialog --title "$TITLE" --progressbox 40 100
-    cd ../..
-fi
+done
 
 clear
 
@@ -228,6 +211,11 @@ EXTENSIONS_LIST=(
 
 
 CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 0 0 0 "${EXTENSIONS_LIST[@]}" 2>&1 >/dev/tty)
+local ERRORCODE=$?
+if [ $ERRORCODE -ne 0 ]; then
+    echo "Error: Dialog failed with exit code $ERRORCODE"
+    exit $ERRORCODE
+fi
 
 if [[ $CHOICE == *"1"* ]]
 then
@@ -251,25 +239,29 @@ then
     mkdir -p /root/sd/models/ControlNet
     cd /root/sd/models/ControlNet
 
-    aria2c -o "control_v11f1p_sd15_depth.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth 2>&1 | \
-        dialog --title "Downloading ControlNet Depth model" --progressbox 40 100
-    aria2c -o "control_v11f1p_sd15_depth.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.yaml 2>&1 | \
-        dialog --title "Downloading ControlNet Depth config" --progressbox 40 100
+    download_model() {
+        model_name=$1
+        model_url=$2
+        config_name=$3
+        config_url=$4
 
-    aria2c -o "control_v11p_sd15_inpaint.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth 2>&1 | \
-        dialog --title "Downloading ControlNet Inpaint model" --progressbox 40 100
-    aria2c -o "control_v11p_sd15_inpaint.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.yaml 2>&1 | \
-        dialog --title "Downloading ControlNet Inpaint config" --progressbox 40 100
-    
-    aria2c -o "control_v11p_sd15_lineart.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth 2>&1 | \
-        dialog --title "Downloading ControlNet LineArt model" --progressbox 40 100
-    aria2c -o "control_v11p_sd15_lineart.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.yaml 2>&1 | \
-        dialog --title "Downloading ControlNet LineArt config" --progressbox 40 100
+        aria2c -o "$model_name" --enable-color=false -x4 "$model_url" 2>&1 | \
+            dialog --title "Downloading $model_name" --progressbox 40 100
+        aria2c -o "$config_name" --enable-color=false -x4 "$config_url" 2>&1 | \
+            dialog --title "Downloading $config_name" --progressbox 40 100
+    }
 
-    aria2c -o "control_v11p_sd15_canny.pth" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth 2>&1 | \
-        dialog --title "Downloading ControlNet Canny model" --progressbox 40 100
-    aria2c -o "control_v11p_sd15_canny.yaml" --enable-color=false -x4 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.yaml 2>&1 | \
-        dialog --title "Downloading ControlNet Canny config" --progressbox 40 100
+    download_model "control_v11f1p_sd15_depth.pth" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth" \
+        "control_v11f1p_sd15_depth.yaml" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.yaml"
+
+    download_model "control_v11p_sd15_inpaint.pth" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth" \
+        "control_v11p_sd15_inpaint.yaml" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.yaml"
+
+    download_model "control_v11p_sd15_lineart.pth" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth" \
+        "control_v11p_sd15_lineart.yaml" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.yaml"
+
+    download_model "control_v11p_sd15_canny.pth" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth" \
+        "control_v11p_sd15_canny.yaml" "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.yaml"
 
     cd /root/sd/
     clear
@@ -283,10 +275,19 @@ clear
 mkdir -p /root/sd/models/ESRGAN
 cd /root/sd/models/ESRGAN
 
-aria2c -x4 -q -o "4x_NMKD-Siax_200k.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth
-aria2c -x4 -q -o "4x-UltraSharp.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth
-aria2c -x4 -q -o "WaifuGAN_v3_30000.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/WaifuGAN_v3_30000.pth
-aria2c -x4 -q -o "4x_RealisticRescaler_100000_G.pth" https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth
+files=(
+    "4x_NMKD-Siax_200k.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth"
+    "4x-UltraSharp.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth"
+    "WaifuGAN_v3_30000.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/WaifuGAN_v3_30000.pth"
+    "4x_RealisticRescaler_100000_G.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth"
+)
+
+for file in "${files[@]}"; do
+    IFS=':' read -r -a parts <<< "$file"
+    filename="${parts[0]}"
+    url="${parts[1]}"
+    aria2c -x4 -q -o "$filename" "$url" 2>&1 | dialog --title "Downloading $filename" --progressbox 40 100
+done
 
 cd /root/sd
 
@@ -299,4 +300,3 @@ echo -e "${GREEN}Run ${CYAN}./webui.sh --listen --xformers${GREEN} to start the 
 IP=$(curl -sL ident.me)
 echo -e "${CYAN}On first run it will be download some requirements. This may take a while"
 echo -e "${GREEN}The address will be http://${IP}:7860/${NC}"
-echo -e "${GREEN}Inpainting work on Firefox (I tested Chrome and it doesn't work)${NC}"

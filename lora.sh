@@ -29,11 +29,16 @@ then echo -e "${WHITE}${BG_RED}This script only works on Ubuntu 22.04${NC}"
     exit
 fi
 
-echo -e "${YELLOW}Updating system${NC}"
-apt update -y
-apt upgrade -y
+if [ "$1" == "-u" ]
+then
+    echo -e "${YELLOW}Upgrading system${NC}"
+    DEBIAN_FRONTEND=noninteractive apt upgrade -y 
+else
+    echo -e "${YELLOW}Skipping system upgrade${NC}"
+fi
+
 echo -e "${CYAN}Installing main dependencies${NC}"
-apt install -y git curl wget aria2 p7zip-full \
+DEBIAN_FRONTEND=noninteractive apt install -y git curl wget aria2 p7zip-full \
 neovim zsh tree \
 p7zip-rar python3 \
 python3-pip \
