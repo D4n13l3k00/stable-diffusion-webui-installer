@@ -31,11 +31,11 @@ This script was created for Selectel GPU Line, for fast and easy installation of
 # For SD
 wget https://raw.githubusercontent.com/D4n13l3k00/stable-diffusion-webui-installer/master/install.sh
 chmod +x install.sh
-./install.sh
+./install.sh # -u for upgrade system
 
 # For LoRA
 wget https://raw.githubusercontent.com/D4n13l3k00/stable-diffusion-webui-installer/master/lora.sh
-chmod +x lora.sh
+chmod +x lora.sh # -u for upgrade system
 ./lora.sh
 ```
 
