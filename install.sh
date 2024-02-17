@@ -276,14 +276,14 @@ mkdir -p /root/sd/models/ESRGAN
 cd /root/sd/models/ESRGAN
 
 files=(
-    "4x_NMKD-Siax_200k.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth"
-    "4x-UltraSharp.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth"
-    "WaifuGAN_v3_30000.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/WaifuGAN_v3_30000.pth"
-    "4x_RealisticRescaler_100000_G.pth:https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth"
+    "4x_NMKD-Siax_200k.pth|https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Siax_200k.pth"
+    "4x-UltraSharp.pth|https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x-UltraSharp.pth"
+    "WaifuGAN_v3_30000.pth|https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/WaifuGAN_v3_30000.pth"
+    "4x_RealisticRescaler_100000_G.pth|https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth"
 )
 
 for file in "${files[@]}"; do
-    IFS=':' read -r -a parts <<< "$file"
+    IFS='|' read -r -a parts <<< "$file"
     filename="${parts[0]}"
     url="${parts[1]}"
     aria2c -x4 -q -o "$filename" "$url" 2>&1 | dialog --title "Downloading $filename" --progressbox 40 100
