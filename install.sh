@@ -93,7 +93,7 @@ CHOICES=(
 
 makechoice() {
     CHOICE=$(dialog --clear --title "Choose models to download" --checklist " " 0 0 0 "${CHOICES[@]}" 2>&1 >/dev/tty)
-    local ERRORCODE=$?
+    ERRORCODE=$?
     if [ $ERRORCODE -ne 0 ]; then
         echo "Error: Dialog failed with exit code $ERRORCODE"
         exit $ERRORCODE
@@ -211,7 +211,7 @@ EXTENSIONS_LIST=(
 
 
 CHOICE=$(dialog --clear --title "Choose extensions to install"  --checklist " " 0 0 0 "${EXTENSIONS_LIST[@]}" 2>&1 >/dev/tty)
-local ERRORCODE=$?
+ERRORCODE=$?
 if [ $ERRORCODE -ne 0 ]; then
     echo "Error: Dialog failed with exit code $ERRORCODE"
     exit $ERRORCODE
