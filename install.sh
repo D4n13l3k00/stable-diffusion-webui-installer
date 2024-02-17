@@ -114,7 +114,7 @@ download_model() {
 
 if [[ $CHOICE == *"1"* ]]
 then
-    download_model "Deliberate v3.safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5.safetensors"
+    download_model "Deliberate v5.safetensors" "https://huggingface.co/XpucT/Deliberate/resolve/main/Deliberate_v5.safetensors"
 fi
 
 if [[ $CHOICE == *"2"* ]]
